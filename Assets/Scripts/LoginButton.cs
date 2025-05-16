@@ -35,6 +35,8 @@ public class LoginButton : MonoBehaviour
                     if (payload != null && !payload.IsExpired())
                     {
                         Debug.Log($"Пользователь: {payload.unique_name}, ID: {payload.nameid}");
+                        SceneChanger sceneChanger = new SceneChanger();
+                        sceneChanger.SceneByIndexAsync(0);
                     }
                     else
                     {
