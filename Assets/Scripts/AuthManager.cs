@@ -23,6 +23,7 @@ public class AuthManager : MonoBehaviour
     }
 
     private string _jwtToken;
+    public string GetToken() => _jwtToken;
 
     public bool IsLoggedIn
     {

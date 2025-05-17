@@ -9,4 +9,9 @@ public class SceneChanger : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
     }
+
+    public void OpenShopScene()
+    {
+        SceneManager.LoadScene("ShopScene");
+    }
 }
