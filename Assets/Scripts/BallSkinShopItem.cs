@@ -11,6 +11,7 @@ public class BallSkinShopItem : MonoBehaviour
     [SerializeField] private Text priceText;
     [SerializeField] private Image skinImage;
     [SerializeField] private Button buyButton;
+    [SerializeField] private Button setButton;
 
 
     [Header("Skin Data")]
@@ -26,18 +27,19 @@ public class BallSkinShopItem : MonoBehaviour
     private void Awake()
     {
         buyButton.onClick.AddListener(OnBuyButtonClicked);
+        setButton.onClick.AddListener(OnSetButtonClicked);
     }
 
     public void Initialize(int userId, BallSkinData skinData, bool owned, bool selected)
     {
         userId = userId;
-        SkinId = skinData.id;
-        skinName = skinData.name;
-        price = skinData.price;
+        SkinId = skinData.Id;
+        skinName = skinData.Name;
+        price = skinData.Price;
 
         skinNameText.text = skinName;
         priceText.text = price.ToString();
-        skinImage.sprite = skinSprite; // You'll need to load this from resources or assign in inspector
+        skinImage.sprite = skinSprite;
 
         isOwned = owned;
         isSelected = selected;
@@ -47,13 +49,16 @@ public class BallSkinShopItem : MonoBehaviour
 
     private void UpdateUI()
     {
-        GetAvailible();
         buyButton.gameObject.SetActive(!isOwned);
-
 
         if (!isOwned)
         {
             StartCoroutine(CheckUserBalance());
+        }
+        else
+        {
+            setButton.gameObject.SetActive(true); // например
+            setButton.interactable = !isSelected;
         }
     }
 
@@ -73,10 +78,10 @@ public class BallSkinShopItem : MonoBehaviour
                 );
 
                 isOwned = response.Skins.Exists(skin => skin.BallSkinId == SkinId);
-                UpdateUI();
             }
         }
 
+        UpdateUI(); // Вызываем UpdateUI только после завершения запроса
     }
 
     private IEnumerator CheckUserBalance()
@@ -96,15 +101,23 @@ public class BallSkinShopItem : MonoBehaviour
             }
         }
     }
+    private void OnSetButtonClicked()
+    {
+        StartCoroutine( SetSkinRequest() );
+    }
 
     private void OnBuyButtonClicked()
     {
         StartCoroutine(BuySkinRequest());
     }
+    private IEnumerator SetSkinRequest()
+    {
+        yield return "";
+        Debug.Log("avava");
+    }
 
     private IEnumerator BuySkinRequest()
     {
-        // Get the JWT token from AuthManager
         var token = AuthManager.Instance.GetToken();
         if (string.IsNullOrEmpty(token))
         {
@@ -112,7 +125,6 @@ public class BallSkinShopItem : MonoBehaviour
             yield break;
         }
 
-        // Get user ID from token payload
         var payload = AuthManager.Instance.GetTokenPayload();
         if (payload == null)
         {
@@ -133,30 +145,21 @@ public class BallSkinShopItem : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                // Purchase successful
                 Debug.Log($"Successfully purchased skin: {skinName}");
-
-                // Update UI to show as owned
                 isOwned = true;
                 UpdateUI();
-
-                // You might want to refresh the player's coin balance here
-                // by making another request to get the updated balance
             }
             else
             {
-                // Handle error
                 Debug.LogError($"Purchase failed: {request.error}");
 
                 try
                 {
-                    // Try to parse the error response
                     var errorResponse = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
                     if (errorResponse != null)
                     {
                         if (errorResponse.ErrorCode == "INSUFFICIENT_FUNDS")
                         {
-                            // Show "Not enough coins" message to player
                             Debug.LogError($"Not enough coins. Needed: {errorResponse.Required}, Have: {errorResponse.Available}");
                         }
                         else
@@ -197,9 +200,9 @@ public class BallSkinShopItem : MonoBehaviour
     [System.Serializable]
     public class BallSkinData
     {
-        public int id;
-        public string name;
-        public int price;
+        public int Id;
+        public string Name;
+        public int Price;
         // Add other skin properties as needed
     }
     [System.Serializable]
