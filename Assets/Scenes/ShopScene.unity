@@ -426,9 +426,9 @@ MonoBehaviour:
   skinImage: {fileID: 0}
   buyButton: {fileID: 764241641}
   setButton: {fileID: 2007435303}
-  SkinId: 3
-  skinName: 
-  price: 0
+  SkinId: 4
+  skinName: Brown
+  price: 100
   skinSprite: {fileID: 0}
 --- !u!114 &244116625
 MonoBehaviour:
@@ -1428,8 +1428,8 @@ MonoBehaviour:
   buyButton: {fileID: 1423283906}
   setButton: {fileID: 743499550}
   SkinId: 2
-  skinName: 
-  price: 10
+  skinName: Blue
+  price: 100
   skinSprite: {fileID: 0}
 --- !u!114 &819038240
 MonoBehaviour:
@@ -1579,7 +1579,7 @@ MonoBehaviour:
   buyButton: {fileID: 2074935811}
   setButton: {fileID: 1743928822}
   SkinId: 1
-  skinName: 
+  skinName: Red
   price: 0
   skinSprite: {fileID: 0}
 --- !u!114 &835922626
@@ -2313,9 +2313,9 @@ MonoBehaviour:
   skinImage: {fileID: 0}
   buyButton: {fileID: 365749232}
   setButton: {fileID: 21975421}
-  SkinId: 4
-  skinName: 
-  price: 0
+  SkinId: 3
+  skinName: Green
+  price: 100
   skinSprite: {fileID: 0}
 --- !u!114 &1447157947
 MonoBehaviour:

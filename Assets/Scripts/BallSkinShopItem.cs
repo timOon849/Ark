@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Networking;
-using System.Collections;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class BallSkinShopItem : MonoBehaviour
 {
@@ -28,11 +29,13 @@ public class BallSkinShopItem : MonoBehaviour
     {
         buyButton.onClick.AddListener(OnBuyButtonClicked);
         setButton.onClick.AddListener(OnSetButtonClicked);
+        userId = GetId();
+        StartCoroutine(GetAvailible());
+        StartCoroutine(GetCurrentSkin());
     }
 
-    public void Initialize(int userId, BallSkinData skinData, bool owned, bool selected)
+    public void Initialize(BallSkinData skinData, bool owned, bool selected)
     {
-        userId = userId;
         SkinId = skinData.Id;
         skinName = skinData.Name;
         price = skinData.Price;
@@ -41,10 +44,8 @@ public class BallSkinShopItem : MonoBehaviour
         priceText.text = price.ToString();
         skinImage.sprite = skinSprite;
 
-        isOwned = owned;
         isSelected = selected;
 
-        UpdateUI();
     }
 
     private void UpdateUI()
@@ -62,10 +63,29 @@ public class BallSkinShopItem : MonoBehaviour
         }
     }
 
+    private IEnumerator GetCurrentSkin()
+    { 
+        var token = AuthManager.Instance.GetToken();
+        string url = $"http://localhost:5295/api/BallSkins/GetCurrentSkin/{userId}";
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            request.SetRequestHeader("Authorization", $"Bearer {token}");
+            yield return request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<CurrentSkinResponse>(request.downloadHandler.text);
+                Debug.Log(response.skin.ballSkinId);
+                isSelected = response.skin.ballSkinId == SkinId;
+                Debug.Log($"{skinName}: {isSelected}");
+            }
+        }
+    }
+
     private IEnumerator GetAvailible()
     {
         var token = AuthManager.Instance.GetToken();
         string url = $"http://localhost:5295/api/BallSkins/GetAvailableSkins/{userId}";
+
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             request.SetRequestHeader("Authorization", $"Bearer {token}");
@@ -73,15 +93,21 @@ public class BallSkinShopItem : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                var response = JsonUtility.FromJson<AvailableSkinsResponse>(
-                    "{\"Skins\":" + request.downloadHandler.text + "}"
-                );
-
-                isOwned = response.Skins.Exists(skin => skin.BallSkinId == SkinId);
+                var response = JsonUtility.FromJson<AvailableSkinsWrapper>(request.downloadHandler.text);
+                isOwned = response.skins.Exists(skin => skin.ballSkinId == SkinId);
+            }
+            else
+            {
+                Debug.LogError($"Error fetching skins: {request.error}, Code: {request.responseCode}");
             }
         }
+        UpdateUI();
+    }
 
-        UpdateUI(); // Вызываем UpdateUI только после завершения запроса
+    private int GetId()
+    { 
+        var payload = AuthManager.Instance.GetTokenPayload();
+        return int.Parse(payload.nameid);
     }
 
     private IEnumerator CheckUserBalance()
@@ -175,17 +201,27 @@ public class BallSkinShopItem : MonoBehaviour
             }
         }
     }
+
     [System.Serializable]
-    private class AvailableSkinsResponse
+    public class CurrentSkinResponse
     {
-        public System.Collections.Generic.List<BuySkins> Skins;
+        public BuySkinResponse skin;
     }
 
     [System.Serializable]
-    private class BuySkins
+    public class BuySkinResponse
     {
-        public int UserId;
-        public int BallSkinId;
+        public int Id;
+        public int userId;
+        public object User; // Можно оставить как object, или сделать отдельный класс User
+        public int ballSkinId;
+        public object BallSkin; // Аналогично
+    }
+
+    [System.Serializable]
+    public class AvailableSkinsWrapper
+    {
+        public List<BuySkinResponse> skins;
     }
 
     [System.Serializable]
