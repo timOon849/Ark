@@ -4,34 +4,24 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
-    private static float speed = 8f; // Начальная скорость мяча
-    private Vector3 direction; // Направление движения мяча
-    private bool isMoving = true; // Флаг для управления началом движения
+    private static float speed = 8f; 
+    private Vector3 direction; 
+    private bool isMoving = true;
     private Vector3 startPosition;
     public Rigidbody2D rb;
     public AudioSource crashSound;
 
     void Start()
     {
-        // Устанавливаем начальное направление (например, вверх)
         direction = new Vector3(0, -1, 0).normalized;
-        //startPosition = transform.position;
         BallManager.RegisterBall(gameObject);
         rb.velocity = direction * speed;
     }
 
-    //void Update()
-    //{
-    //    if (isMoving)
-    //    {
-    //        // Двигаем мяч в заданном направлении
-    //        transform.Translate(direction * speed * Time.deltaTime);
-    //    }
-    //}
+
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // Отскок от платформы
         if (collision.gameObject.CompareTag("Paddle"))
         {
             float hitPosition = (transform.position.x - collision.transform.position.x) / collision.collider.bounds.size.x;
@@ -40,10 +30,8 @@ public class BallMovement : MonoBehaviour
 
         }
 
-        //// Отскок от стен (горизонтальные границы)
         if (collision.gameObject.CompareTag("Wall"))
         {
-            // Инвертируем горизонтальное направление при ударе о стену
             direction.x = -direction.x;
             rb.velocity = direction * speed;
         }
@@ -57,7 +45,6 @@ public class BallMovement : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("TopBoundary"))
         {
-            // Можно добавить логику потери жизни или перезапуска уровня
             direction.y = -direction.y;
             rb.velocity = direction * speed;
         }

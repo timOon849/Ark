@@ -205,7 +205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 21975422}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034243697}
+        m_TargetAssemblyTypeName: BallSkinShopItem, Assembly-CSharp
+        m_MethodName: SetButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: green
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &21975422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +256,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 21975419}
   m_CullTransparentMesh: 1
+--- !u!1 &92241495
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 92241496}
+  - component: {fileID: 92241497}
+  m_Layer: 0
+  m_Name: SkinManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &92241496
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92241495}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.09911129, y: -0.13519332, z: -1.7931703}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &92241497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92241495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66fdef2ba017b2d49b053a7febad6918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentBall: {fileID: 8017461269813474410, guid: 0af4151d830cd074aab9d68fb3c071e8, type: 3}
 --- !u!1 &211309636
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,7 +390,6 @@ GameObject:
   m_Component:
   - component: {fileID: 244116623}
   - component: {fileID: 244116622}
-  - component: {fileID: 244116624}
   - component: {fileID: 244116625}
   m_Layer: 0
   m_Name: BrownBall
@@ -409,27 +465,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &244116624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 244116621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85b22b98c0487434cbd7ad0211eeb8bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skinNameText: {fileID: 0}
-  priceText: {fileID: 842316921}
-  skinImage: {fileID: 0}
-  buyButton: {fileID: 764241641}
-  setButton: {fileID: 2007435303}
-  SkinId: 4
-  skinName: Brown
-  price: 100
-  skinSprite: {fileID: 0}
 --- !u!114 &244116625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -714,7 +749,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 365749233}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034243697}
+        m_TargetAssemblyTypeName: BallSkinShopItem, Assembly-CSharp
+        m_MethodName: BuyButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: green
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &365749233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -993,7 +1040,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 743499551}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034243697}
+        m_TargetAssemblyTypeName: BallSkinShopItem, Assembly-CSharp
+        m_MethodName: SetButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: blue
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &743499551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,7 +1173,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 764241642}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034243697}
+        m_TargetAssemblyTypeName: BallSkinShopItem, Assembly-CSharp
+        m_MethodName: BuyButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: brown
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &764241642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1334,7 +1405,6 @@ GameObject:
   m_Component:
   - component: {fileID: 819038238}
   - component: {fileID: 819038237}
-  - component: {fileID: 819038239}
   - component: {fileID: 819038240}
   m_Layer: 0
   m_Name: BlueBall
@@ -1410,27 +1480,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &819038239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 819038236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85b22b98c0487434cbd7ad0211eeb8bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skinNameText: {fileID: 0}
-  priceText: {fileID: 533562911}
-  skinImage: {fileID: 0}
-  buyButton: {fileID: 1423283906}
-  setButton: {fileID: 743499550}
-  SkinId: 2
-  skinName: Blue
-  price: 100
-  skinSprite: {fileID: 0}
 --- !u!114 &819038240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1485,7 +1534,6 @@ GameObject:
   m_Component:
   - component: {fileID: 835922624}
   - component: {fileID: 835922623}
-  - component: {fileID: 835922625}
   - component: {fileID: 835922626}
   m_Layer: 0
   m_Name: RedBall
@@ -1561,27 +1609,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &835922625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835922622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85b22b98c0487434cbd7ad0211eeb8bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skinNameText: {fileID: 0}
-  priceText: {fileID: 488680728}
-  skinImage: {fileID: 0}
-  buyButton: {fileID: 2074935811}
-  setButton: {fileID: 1743928822}
-  SkinId: 1
-  skinName: Red
-  price: 0
-  skinSprite: {fileID: 0}
 --- !u!114 &835922626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2171,7 +2198,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1423283907}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034243697}
+        m_TargetAssemblyTypeName: BallSkinShopItem, Assembly-CSharp
+        m_MethodName: BuyButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: blue
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1423283907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2220,7 +2259,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1447157945}
   - component: {fileID: 1447157944}
-  - component: {fileID: 1447157946}
   - component: {fileID: 1447157947}
   m_Layer: 0
   m_Name: Circle
@@ -2296,27 +2334,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1447157946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1447157943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85b22b98c0487434cbd7ad0211eeb8bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skinNameText: {fileID: 0}
-  priceText: {fileID: 793165732}
-  skinImage: {fileID: 0}
-  buyButton: {fileID: 365749232}
-  setButton: {fileID: 21975421}
-  SkinId: 3
-  skinName: Green
-  price: 100
-  skinSprite: {fileID: 0}
 --- !u!114 &1447157947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2734,7 +2751,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1743928823}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034243697}
+        m_TargetAssemblyTypeName: BallSkinShopItem, Assembly-CSharp
+        m_MethodName: SetButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: red
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1743928823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2934,7 +2963,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2007435304}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034243697}
+        m_TargetAssemblyTypeName: BallSkinShopItem, Assembly-CSharp
+        m_MethodName: SetButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: brown
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2007435304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3053,6 +3094,67 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.000173569, y: -0.000026703, z: 0}
   m_LocalScale: {x: 1.4814527, y: 1.4814897, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2034243696
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2034243698}
+  - component: {fileID: 2034243697}
+  m_Layer: 0
+  m_Name: BallShopManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2034243697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034243696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85b22b98c0487434cbd7ad0211eeb8bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redBuyButton: {fileID: 2074935811}
+  redSetButton: {fileID: 1743928822}
+  redPriceTxt: {fileID: 488680728}
+  blueBuyButton: {fileID: 1423283906}
+  blueSetButton: {fileID: 743499550}
+  bluePriceTxt: {fileID: 533562911}
+  brownBuyButton: {fileID: 764241641}
+  brownSetButton: {fileID: 2007435303}
+  brownPriceTxt: {fileID: 842316921}
+  greenBuyButton: {fileID: 365749232}
+  greenSetButton: {fileID: 21975421}
+  greenPriceTxt: {fileID: 793165732}
+  sprites:
+  - {fileID: 2101769767, guid: 48425ddf849aeac4ea5d9ecc4dcad5fa, type: 3}
+  - {fileID: -1341832273, guid: 48425ddf849aeac4ea5d9ecc4dcad5fa, type: 3}
+  - {fileID: -1549292267, guid: 48425ddf849aeac4ea5d9ecc4dcad5fa, type: 3}
+  - {fileID: 200957879, guid: 48425ddf849aeac4ea5d9ecc4dcad5fa, type: 3}
+--- !u!4 &2034243698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034243696}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.112601906, y: -0.3003225, z: -1.7833202}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3218,7 +3320,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2074935812}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2034243697}
+        m_TargetAssemblyTypeName: BallSkinShopItem, Assembly-CSharp
+        m_MethodName: BuyButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: red
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2074935812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3270,3 +3384,5 @@ SceneRoots:
   - {fileID: 819038238}
   - {fileID: 244116623}
   - {fileID: 1447157945}
+  - {fileID: 2034243698}
+  - {fileID: 92241496}

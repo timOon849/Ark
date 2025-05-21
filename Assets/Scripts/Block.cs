@@ -15,7 +15,6 @@ public class Block : MonoBehaviour
         // Устанавливаем текущее здоровье равным максимальному
         maxHealth = Random.Range(1, 4);
         currentHealth = maxHealth;
-        Destroy(gameObject);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -58,26 +57,21 @@ public class Block : MonoBehaviour
             if (randInt == 1)
             {
                 Instantiate(bonus1, spawnpos, spawnrot);
-                Instantiate(bonus5, spawnpos, spawnrot);
             }
             if (randInt == 2)
             {
                 Instantiate(bonus2, spawnpos, spawnrot);
-                Instantiate(bonus1, spawnpos, spawnrot);
             }
             if (randInt == 3)
             {
-                Instantiate(bonus2, spawnpos, spawnrot);
                 Instantiate(bonus3, spawnpos, spawnrot);
             }
             if (randInt == 4)
             {
-                Instantiate(bonus3, spawnpos, spawnrot);
                 Instantiate(bonus4, spawnpos, spawnrot);
             }
             if (randInt == 5)
             {
-                Instantiate(bonus4, spawnpos, spawnrot);
                 Instantiate(bonus5, spawnpos, spawnrot);
             }
         }

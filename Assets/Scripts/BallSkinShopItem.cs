@@ -4,63 +4,79 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class BallSkinShopItem : MonoBehaviour
 {
-    [Header("UI Elements")]
-    [SerializeField] private Text skinNameText;
-    [SerializeField] private Text priceText;
-    [SerializeField] private Image skinImage;
-    [SerializeField] private Button buyButton;
-    [SerializeField] private Button setButton;
 
+    [Header("Red buttons")]
+    public Button redBuyButton;
+    public Button redSetButton;
+    public UnityEngine.UI.Text redPriceTxt;
 
-    [Header("Skin Data")]
-    public int SkinId;
-    public string skinName;
-    public int price;
-    public Sprite skinSprite;
+    [Header("Blue buttons")]
+    public Button blueBuyButton;
+    public Button blueSetButton;
+    public UnityEngine.UI.Text bluePriceTxt;
+
+    [Header("Brown buttons")]
+    public Button brownBuyButton;
+    public Button brownSetButton;
+    public UnityEngine.UI.Text brownPriceTxt;
+
+    [Header("Green buttons")]
+    public Button greenBuyButton;
+    public Button greenSetButton;
+    public UnityEngine.UI.Text greenPriceTxt;
+
+    [Header("Sprites")]
+    public Sprite[] sprites;
 
     private int userId;
-    private bool isOwned;
-    private bool isSelected;    
+
+    private bool redOwned = false;
+    private bool redSelected = false;
+    private int redPrice = 0;
+
+    private bool blueOwned = false;
+    private bool blueSelected = false;
+    private int bluePrice = 100;
+
+    private bool brownOwned = false;
+    private bool brownSelected = false;
+    private int brownPrice = 100;
+
+    private bool greenOwned = false;
+    private bool greenSelected = false;
+    private int greenPrice = 100;
 
     private void Awake()
     {
-        buyButton.onClick.AddListener(OnBuyButtonClicked);
-        setButton.onClick.AddListener(OnSetButtonClicked);
         userId = GetId();
         StartCoroutine(GetAvailible());
         StartCoroutine(GetCurrentSkin());
+        redPriceTxt.text = $"{redPrice} coins";
+        bluePriceTxt.text = $"{bluePrice} coins";
+        brownPriceTxt.text = $"{brownPrice} coins";
+        greenPriceTxt.text = $"{greenPrice} coins";
     }
 
-    public void Initialize(BallSkinData skinData, bool owned, bool selected)
-    {
-        SkinId = skinData.Id;
-        skinName = skinData.Name;
-        price = skinData.Price;
 
-        skinNameText.text = skinName;
-        priceText.text = price.ToString();
-        skinImage.sprite = skinSprite;
-
-        isSelected = selected;
-
-    }
 
     private void UpdateUI()
     {
-        buyButton.gameObject.SetActive(!isOwned);
-
-        if (!isOwned)
-        {
-            StartCoroutine(CheckUserBalance());
-        }
-        else
-        {
-            setButton.gameObject.SetActive(true); // например
-            setButton.interactable = !isSelected;
-        }
+        redBuyButton.gameObject.SetActive(!redOwned);
+        blueBuyButton.gameObject.SetActive(!blueOwned);
+        greenBuyButton.gameObject.SetActive(!greenOwned);
+        brownBuyButton.gameObject.SetActive(!brownOwned);
+        redSetButton.gameObject.SetActive(redOwned);
+        redSetButton.interactable = !redSelected;
+        blueSetButton.gameObject.SetActive(blueOwned);
+        blueSetButton.interactable = !blueSelected;
+        greenSetButton.gameObject.SetActive(greenOwned);
+        greenSetButton.interactable = !greenSelected;
+        brownSetButton.gameObject.SetActive(brownOwned);
+        brownSetButton.interactable = !brownSelected;
     }
 
     private IEnumerator GetCurrentSkin()
@@ -75,9 +91,35 @@ public class BallSkinShopItem : MonoBehaviour
             {
                 var response = JsonUtility.FromJson<CurrentSkinResponse>(request.downloadHandler.text);
                 Debug.Log(response.skin.ballSkinId);
-                isSelected = response.skin.ballSkinId == SkinId;
-                Debug.Log($"{skinName}: {isSelected}");
+                switch (response.skin.ballSkinId)
+                {
+                    case 1:
+                        redSelected = true;
+                        blueSelected = false;
+                        greenSelected = false;
+                        brownSelected = false;
+                        break;
+                    case 2:
+                        redSelected = false;
+                        blueSelected = true;
+                        greenSelected = false;
+                        brownSelected = false;
+                        break;
+                    case 3:
+                        redSelected = false;
+                        blueSelected = false;
+                        greenSelected = true;
+                        brownSelected = false;
+                        break;
+                    case 4:
+                        redSelected = false;
+                        blueSelected = false;
+                        greenSelected = false;
+                        brownSelected = true;
+                        break;
+                }
             }
+            UpdateUI();
         }
     }
 
@@ -94,7 +136,24 @@ public class BallSkinShopItem : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var response = JsonUtility.FromJson<AvailableSkinsWrapper>(request.downloadHandler.text);
-                isOwned = response.skins.Exists(skin => skin.ballSkinId == SkinId);
+                foreach (BuySkinResponse bs in response.skins)
+                {
+                    switch (bs.ballSkinId)
+                    {
+                        case 1:
+                            redOwned = true;
+                            continue;
+                        case 2:
+                            blueOwned = true;
+                            continue;
+                        case 3:
+                            brownOwned = true;
+                            continue;
+                        case 4:
+                            greenOwned = true;
+                            continue;
+                    }
+                }
             }
             else
             {
@@ -123,27 +182,68 @@ public class BallSkinShopItem : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var balance = JsonUtility.FromJson<BalanceResponse>(request.downloadHandler.text);
-                buyButton.interactable = balance.Coins >= price;
             }
         }
     }
-    private void OnSetButtonClicked()
+
+    public void SetButton(string sender)
     {
-        StartCoroutine( SetSkinRequest() );
+        StartCoroutine(SetSkinRequest(sender));
     }
 
-    private void OnBuyButtonClicked()
+    private IEnumerator SetSkinRequest(string sender)
     {
-        StartCoroutine(BuySkinRequest());
-    }
-    private IEnumerator SetSkinRequest()
-    {
-        yield return "";
-        Debug.Log("avava");
+        int SkinId = 0;
+        switch (sender)
+        {
+            case "red":
+                SkinId = 1; break;
+            case "blue":
+                SkinId = 2; break;
+            case "brown":
+                SkinId = 3; break;
+            case "green":
+                SkinId = 4; break;
+        }
+        Debug.Log(sprites[SkinId - 1].name);
+        SkinManagerScript.Instance.SetCurrentSkin(sprites[SkinId - 1]);
+        var token = AuthManager.Instance.GetToken();
+        string url = $"http://localhost:5295/api/BallSkins/SetCurrentSkin/{userId}/{SkinId}";
+        using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, ""))
+        {
+            request.SetRequestHeader("Authorization", $"Bearer {token}");
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var result = JsonUtility.FromJson<CurrentSkinResponse>(request.downloadHandler.text);
+                Debug.Log(result.skin.ballSkinId);
+                StartCoroutine(GetCurrentSkin());
+                UpdateUI();
+            }
+        }
     }
 
-    private IEnumerator BuySkinRequest()
+    public void BuyButton(string sender)
     {
+        StartCoroutine(BuySkinRequest(sender));
+    }
+
+    private IEnumerator BuySkinRequest(string Sender)
+    {   
+        int SkinId = 0;
+        switch (Sender)
+        {
+            case "red":
+                SkinId = 1; break;
+            case "blue":
+                SkinId = 2; break;
+            case "brown":
+                SkinId = 3; break;
+            case "green":
+                SkinId = 4; break;
+        }
         var token = AuthManager.Instance.GetToken();
         if (string.IsNullOrEmpty(token))
         {
@@ -151,16 +251,12 @@ public class BallSkinShopItem : MonoBehaviour
             yield break;
         }
 
-        var payload = AuthManager.Instance.GetTokenPayload();
-        if (payload == null)
+        if (userId == 0)
         {
-            Debug.LogError("Could not get user ID from token");
-            yield break;
+            Debug.Log($"Can't load user's ID!");
         }
 
-        int UserId = int.Parse(payload.nameid);
-
-        string url = $"http://localhost:5295/api/BallSkins/BuySkin/{UserId}/{SkinId}";
+        string url = $"http://localhost:5295/api/BallSkins/BuySkin/{userId}/{SkinId}";
 
         using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, ""))
         {
@@ -171,8 +267,8 @@ public class BallSkinShopItem : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log($"Successfully purchased skin: {skinName}");
-                isOwned = true;
+                Debug.Log($"Successfully purchased skin: {SkinId}");
+                StartCoroutine(GetAvailible());
                 UpdateUI();
             }
             else
