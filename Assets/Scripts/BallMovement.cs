@@ -39,9 +39,6 @@ public class BallMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("BottomBoundary"))
         {
             Destroy(gameObject);
-            HpManager.TakeDamage();
-            ReturnToStart();
-
         }
         if (collision.gameObject.CompareTag("TopBoundary"))
         {
@@ -63,6 +60,10 @@ public class BallMovement : MonoBehaviour
     private void OnDisable()
     {
         BallManager.UnregisterBall(gameObject);
+        if (BallManager.activeBalls.Count == 0)
+        {
+            StartCoroutine(ReturnToStart()              );
+        }
     }
 
     public void destroyClones()

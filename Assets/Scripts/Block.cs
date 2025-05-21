@@ -35,6 +35,8 @@ public class Block : MonoBehaviour
         if (currentHealth <= 0)
         {
             TryToSpawnBonuses();
+            StartCoroutine(BalanseManagerScript.instance.EarnCoins(5));
+            //StartCoroutine(BalanseManagerScript.instance.UpdateBalanse());
             ScoreManager.AddScore(10);
             Destroy(gameObject);
         }

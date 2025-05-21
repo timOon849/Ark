@@ -10,6 +10,7 @@ TagManager:
   - Block
   - Ball
   - BottomBoundary
+  - CoinTxtOutput
   layers:
   - Default
   - TransparentFX

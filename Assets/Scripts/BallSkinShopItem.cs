@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -29,6 +30,10 @@ public class BallSkinShopItem : MonoBehaviour
     public Button greenSetButton;
     public UnityEngine.UI.Text greenPriceTxt;
 
+    [Header("Text objects")]
+    [SerializeField] private UnityEngine.UI.Text coinTxt;
+    [SerializeField] private UnityEngine.UI.Text errorTxt;
+
     [Header("Sprites")]
     public Sprite[] sprites;
 
@@ -49,10 +54,12 @@ public class BallSkinShopItem : MonoBehaviour
     private bool greenOwned = false;
     private bool greenSelected = false;
     private int greenPrice = 100;
+    private int coinsBalanse = 0;
 
     private void Awake()
     {
         userId = GetId();
+        StartCoroutine(UpdateBalance());
         StartCoroutine(GetAvailible());
         StartCoroutine(GetCurrentSkin());
         redPriceTxt.text = $"{redPrice} coins";
@@ -77,6 +84,23 @@ public class BallSkinShopItem : MonoBehaviour
         greenSetButton.interactable = !greenSelected;
         brownSetButton.gameObject.SetActive(brownOwned);
         brownSetButton.interactable = !brownSelected;
+    }
+
+    private IEnumerator UpdateBalance()
+    { 
+        var token = AuthManager.Instance.GetToken();
+        string url = $"http://localhost:5295/api/Coins/balance/{userId}";
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            request.SetRequestHeader("Authorization", $"Bearer {token}");
+            yield return request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<BalanseResponse>(request.downloadHandler.text);
+                coinsBalanse = response.coins;
+                coinTxt.text = coinsBalanse.ToString();
+            }
+        }
     }
 
     private IEnumerator GetCurrentSkin()
@@ -169,23 +193,6 @@ public class BallSkinShopItem : MonoBehaviour
         return int.Parse(payload.nameid);
     }
 
-    private IEnumerator CheckUserBalance()
-    {
-        string url = $"http://localhost:5295/api/Coins/GetBalance/{userId}";
-        var token = AuthManager.Instance.GetToken();
-
-        using (UnityWebRequest request = UnityWebRequest.Get(url))
-        {
-            request.SetRequestHeader("Authorization", $"Bearer {token}");
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                var balance = JsonUtility.FromJson<BalanceResponse>(request.downloadHandler.text);
-            }
-        }
-    }
-
     public void SetButton(string sender)
     {
         StartCoroutine(SetSkinRequest(sender));
@@ -231,71 +238,104 @@ public class BallSkinShopItem : MonoBehaviour
     }
 
     private IEnumerator BuySkinRequest(string Sender)
-    {   
+    {
+        bool enough = true;
         int SkinId = 0;
         switch (Sender)
         {
             case "red":
                 SkinId = 1; break;
             case "blue":
-                SkinId = 2; break;
-            case "brown":
-                SkinId = 3; break;
-            case "green":
-                SkinId = 4; break;
-        }
-        var token = AuthManager.Instance.GetToken();
-        if (string.IsNullOrEmpty(token))
-        {
-            Debug.LogError("User is not authenticated");
-            yield break;
-        }
-
-        if (userId == 0)
-        {
-            Debug.Log($"Can't load user's ID!");
-        }
-
-        string url = $"http://localhost:5295/api/BallSkins/BuySkin/{userId}/{SkinId}";
-
-        using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, ""))
-        {
-            request.SetRequestHeader("Authorization", $"Bearer {token}");
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log($"Successfully purchased skin: {SkinId}");
-                StartCoroutine(GetAvailible());
-                UpdateUI();
-            }
-            else
-            {
-                Debug.LogError($"Purchase failed: {request.error}");
-
-                try
+                SkinId = 2;
+                if (coinsBalanse < bluePrice)
                 {
-                    var errorResponse = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
-                    if (errorResponse != null)
+                    enough = false;
+                }
+                break;
+            case "brown":
+                SkinId = 3;
+                if (coinsBalanse < brownPrice)
+                {
+                    enough = false;
+                }
+                break;
+            case "green":
+                SkinId = 4;
+                if (coinsBalanse < greenPrice)
+                {
+                    enough = false;
+                }
+                break;
+        }
+        if (enough)
+        {
+            var token = AuthManager.Instance.GetToken();
+            if (string.IsNullOrEmpty(token))
+            {
+                Debug.LogError("User is not authenticated");
+                yield break;
+            }
+
+            if (userId == 0)
+            {
+                Debug.Log($"Can't load user's ID!");
+            }
+
+            string url = $"http://localhost:5295/api/BallSkins/BuySkin/{userId}/{SkinId}";
+
+            using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, ""))
+            {
+                request.SetRequestHeader("Authorization", $"Bearer {token}");
+                request.SetRequestHeader("Content-Type", "application/json");
+
+                yield return request.SendWebRequest();
+
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    Debug.Log($"Successfully purchased skin: {SkinId}");
+                    errorTxt.text = "ÀÉ ÊÐÀÑÀÂÀ!";
+                    errorTxt.color = Color.green;
+                    StartCoroutine(UpdateBalance());
+                    StartCoroutine(GetAvailible());
+                    UpdateUI();
+                }
+                else
+                {
+                    Debug.LogError($"Purchase failed: {request.error}");
+
+                    try
                     {
-                        if (errorResponse.ErrorCode == "INSUFFICIENT_FUNDS")
+                        var errorResponse = JsonUtility.FromJson<ErrorResponse>(request.downloadHandler.text);
+                        if (errorResponse != null)
                         {
-                            Debug.LogError($"Not enough coins. Needed: {errorResponse.Required}, Have: {errorResponse.Available}");
-                        }
-                        else
-                        {
-                            Debug.LogError($"Purchase error: {errorResponse.Error}");
+                            if (errorResponse.ErrorCode == "INSUFFICIENT_FUNDS")
+                            {
+                                Debug.LogError($"Not enough coins. Needed: {errorResponse.Required}, Have: {errorResponse.Available}");
+                            }
+                            else
+                            {
+                                Debug.LogError($"Purchase error: {errorResponse.Error}");
+                            }
                         }
                     }
-                }
-                catch
-                {
-                    Debug.LogError($"Raw error response: {request.downloadHandler.text}");
+                    catch
+                    {
+                        Debug.LogError($"Raw error response: {request.downloadHandler.text}");
+                    }
                 }
             }
         }
+        else 
+        {
+            errorTxt.text = "ÍÅÄÎÑÒÀÒÎ×ÍÎ ÑÐÅÄÑÒÂ!";
+            errorTxt.color = Color.red;
+        }
+    }
+
+    [System.Serializable]
+    public class BalanseResponse
+    {
+        public int coins;
     }
 
     [System.Serializable]
@@ -336,10 +376,5 @@ public class BallSkinShopItem : MonoBehaviour
         public string Name;
         public int Price;
         // Add other skin properties as needed
-    }
-    [System.Serializable]
-    private class BalanceResponse
-    {
-        public int Coins;
     }
 }

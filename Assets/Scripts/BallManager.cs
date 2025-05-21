@@ -4,7 +4,7 @@ using UnityEngine;
 public class BallManager : MonoBehaviour
 {
     // Список всех активных шариков на игровом поле
-    private static List<GameObject> activeBalls = new List<GameObject>();
+    public static List<GameObject> activeBalls = new List<GameObject>();
     public GameObject ballPrefab;
     public Vector3 spawnPosition;
 
