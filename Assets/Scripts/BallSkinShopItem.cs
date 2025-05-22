@@ -30,6 +30,7 @@ public class BallSkinShopItem : MonoBehaviour
     public Button greenSetButton;
     public UnityEngine.UI.Text greenPriceTxt;
 
+
     [Header("Text objects")]
     [SerializeField] private UnityEngine.UI.Text coinTxt;
     [SerializeField] private UnityEngine.UI.Text errorTxt;
@@ -132,14 +133,14 @@ public class BallSkinShopItem : MonoBehaviour
                     case 3:
                         redSelected = false;
                         blueSelected = false;
-                        greenSelected = true;
-                        brownSelected = false;
+                        greenSelected = false;
+                        brownSelected = true;
                         break;
                     case 4:
                         redSelected = false;
                         blueSelected = false;
-                        greenSelected = false;
-                        brownSelected = true;
+                        greenSelected = true;
+                        brownSelected = false;
                         break;
                 }
             }
@@ -211,6 +212,10 @@ public class BallSkinShopItem : MonoBehaviour
                 SkinId = 3; break;
             case "green":
                 SkinId = 4; break;
+            case "pink":
+                SkinId = 5; break;
+            case "greenBlock":
+                SkinId = 6 ; break;
         }
         Debug.Log(sprites[SkinId - 1].name);
         SkinManagerScript.Instance.SetCurrentSkin(sprites[SkinId - 1]);
@@ -265,6 +270,12 @@ public class BallSkinShopItem : MonoBehaviour
                 {
                     enough = false;
                 }
+                break;
+            case "pink":
+                SkinId = 5;
+                break;
+            case "greenBlock": 
+                SkinId = 6;
                 break;
         }
         if (enough)
